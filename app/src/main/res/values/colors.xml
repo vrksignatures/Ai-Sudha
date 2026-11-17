@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ink">#FF0E1116</color>
+    <color name="ink_deep">#FF090B10</color>
+    <color name="panel_surface">#F20F141B</color>
+    <color name="panel_stroke">#33FFFFFF</color>
+
+    <color name="accent">#FF2BD9A0</color>
+    <color name="accent_deep">#FF12A87A</color>
+    <color name="warn">#FFFFB74D</color>
+    <color name="danger">#FFFF6B6B</color>
+    <color name="muted">#FF9AA7B4</color>
+
+    <color name="success_green">#FF33D17A</color>
+    <color name="skip_amber">#FFFFC857</color>
+    <color name="error_red">#FFFF5A5F</color>
+
+    <color name="text_primary">#FFF5F8FA</color>
+    <color name="text_secondary">#FFB9C4D0</color>
+    <color name="ic_launcher_background">#FF0E1116</color>
+
+    <color name="panel_bg_start">#FF1F9D74</color>
+    <color name="panel_bg_finish">#FF1F9D74</color>
+    <color name="panel_bg_attention">#FFB3541E</color>
+    <color name="panel_bg_finish_text">#FF0E1116</color>
+    <color name="panel_bg_attention_text">#FFF5F8FA</color>
+    <color name="panel_row_bg">#66151D26</color>
+</resources>

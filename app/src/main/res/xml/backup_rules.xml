@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Pre-API-31 counterpart of data_extraction_rules.xml (used by minSdk 24..30).
+  The ledger holds real retailer IDs, so it is excluded from backup entirely.
+-->
+<full-backup-content>
+    <exclude domain="file" path="ledger" />
+    <exclude domain="sharedpref" path="sudha_bot.xml" />
+</full-backup-content>

@@ -1,0 +1,102 @@
+# ---------------------------------------------------------------------------
+# SudhaAutoBot — build the APK on every push to main.
+#
+# Produces BOTH artifacts from the same source:
+#   • app-debug.apk    signed with the ephemeral Android debug keystore, so it
+#                      installs straight away. This is the one to sideload.
+#   • app-release-unsigned.apk  untouched release build, for your own signing.
+#
+# No Android Studio, no local SDK, no secrets: the runner has the SDK
+# pre-installed and Gradle pulls the AGP it needs.
+# ---------------------------------------------------------------------------
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:        # lets you run it by hand from the Actions tab
+
+concurrency:
+  group: apk-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Assemble debug + release APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install Android SDK packages
+        run: |
+          # The runner ships the SDK; pick whichever sdkmanager layout it has.
+          SDKMANAGER="$(command -v sdkmanager || true)"
+          if [ -z "$SDKMANAGER" ]; then
+            SDKMANAGER="$(find "$ANDROID_HOME" -name sdkmanager -type f 2>/dev/null | sort | tail -1)"
+          fi
+          echo "sdkmanager: $SDKMANAGER"
+          if [ -n "$SDKMANAGER" ]; then
+            yes | "$SDKMANAGER" --licenses > /dev/null 2>&1 || true
+            yes | "$SDKMANAGER" "platform-tools" "platforms;android-34" "build-tools;34.0.0" > /dev/null
+          else
+            echo "::warning::sdkmanager not found; relying on the packages already on the runner"
+          fi
+          # Gradle needs to know where the SDK is.
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          cat local.properties
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Compile the engine and resources (debug)
+        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+
+      - name: Compile the unsigned release
+        run: ./gradlew :app:assembleRelease --no-daemon --stacktrace
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p out
+          cp app/build/outputs/apk/debug/*.apk out/ || true
+          cp app/build/outputs/apk/release/*.apk out/ || true
+          ls -lh out
+
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sudha-autobot-apk
+          path: out/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Attach APKs to the run summary
+        if: success() || failure()
+        run: |
+          {
+            echo "### SudhaAutoBot build"
+            echo ""
+            echo "| file | size |"
+            echo "|------|------|"
+            for f in out/*.apk; do
+              [ -e "$f" ] && echo "| \`$(basename "$f")\` | $(du -h "$f" | cut -f1) |"
+            done
+            echo ""
+            echo "Download from the **Artifacts** section of this run."
+          } >> "$GITHUB_STEP_SUMMARY"

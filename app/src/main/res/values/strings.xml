@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SudhaAutoBot</string>
+    <string name="service_label">SudhaAutoBot</string>
+    <string name="service_summary">Automates the daily Sudha order entry</string>
+    <string name="service_description">SudhaAutoBot drives the third-party app \"Sudha Daily Orders\" for you: it opens Customers, finds every SMR retailer, copies the previous order from up to 3 days back and places the order. It never sends anything off the device and it only acts inside the package you configure.</string>
+
+    <string name="hint_target_package">Target package, e.g. com.vrksignatures.sudhadairy</string>
+    <string name="btn_save_target">Save package</string>
+    <string name="btn_accessibility">1 · Enable accessibility</string>
+    <string name="btn_overlay">2 · Allow floating panel</string>
+    <string name="btn_start_panel">3 · Show floating panel</string>
+    <string name="btn_stop_panel">Hide floating panel</string>
+    <string name="btn_open_target">Open target app</string>
+    <string name="btn_reset_ledger">Reset today\'s ledger</string>
+
+    <string name="title_flows">Operator flow</string>
+    <string name="flow_text">1. Enable the accessibility service.\n2. Grant \"Display over other apps\".\n3. Enter the target package and save.\n4. Open the bus app, sign in, sit on the home screen.\n5. Show the floating panel and press ▶ START.</string>
+    <string name="title_notes">Heads-up</string>
+    <string name="notes_text">• The bot is a UI macro. It types nothing, buys nothing and only taps what is described in the request.\n• Keep \"Auto-join\" off on Oppo/Vivo; the panel needs to stay pinned.\n• Anyone with the accessibility permission can read screens. Only enable it for apps you trust.</string>
+
+    <string name="panel_start">▶ START</string>
+    <string name="panel_pause">⏸ PAUSE</string>
+    <string name="panel_reset">↺ Reset</string>
+    <string name="panel_password">Password</string>
+    <string name="panel_success">SUCCESS</string>
+    <string name="panel_skipped">SKIPPED</string>
+    <string name="panel_errors">ERRORS</string>
+</resources>

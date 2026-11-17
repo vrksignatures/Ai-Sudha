@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.vrksignatures.sudhaautobot'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.vrksignatures.sudhaautobot'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '1.0.0'
+
+        // Default target package. The value is only a fallback: whatever is typed on
+        // MainActivity (and persisted in SharedPreferences) wins at runtime.
+        buildConfigField 'String', 'DEFAULT_TARGET_PACKAGE', '"com.vrksignatures.sudhadairy"'
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            applicationIdSuffix '' // keep the same id so the service binding survives re-installs
+            versionNameSuffix '-debug'
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false
+            // Intentionally NOT signed by the "release" workflow: the CI produces an
+            // unsigned debug APK. Add a signingConfig here if you need a release build.
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    packagingOptions {
+        resources.excludes += ['META-INF/*.kotlin_module', 'META-INF/DEPENDENCIES']
+    }
+}
+
+// No third-party dependencies at all: only android.jar framework APIs are used.
+dependencies {
+}

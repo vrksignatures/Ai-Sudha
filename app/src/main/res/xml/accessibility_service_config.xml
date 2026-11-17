@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Accessibility service contract for SudhaAutoBot.
+
+  Notes
+  ~~~~~
+  * canRetrieveWindowContent / canPerformGestures are mandatory for the bot.
+  * flags flagRetrieveInteractiveWindows is required to look at dialogs that live
+    in a separate window (calendar popup, "no data" alert, payment sheet).
+  * notificationTimeout=100 keeps the event stream chatty; the engine debounces
+    events itself, and content changes are what reveal the retailer list loading.
+  * The target app packages are declared in packageNames so the service does not
+    get woken up by every other app on the phone. MainActivity rewrites this list
+    at runtime if you type a different package name.
+-->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeViewScrolled"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagDefault|flagReportViewIds|flagRetrieveInteractiveWindows|flagIncludeNotImportantViews"
+    android:canPerformGestures="true"
+    android:canRetrieveWindowContent="true"
+    android:description="@string/service_description"
+    android:notificationTimeout="100"
+    android:settingsActivity="com.vrksignatures.sudhaautobot.MainActivity"
+    android:summary="@string/service_summary" />

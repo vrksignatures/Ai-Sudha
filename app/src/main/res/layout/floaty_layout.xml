@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  floaty_layout.xml — the head chat-head style panel that floats above
+  "Sudha Daily Orders" while the accessibility engine is running.
+
+  Everything here is a plain LinearLayout so it inflates identically on the
+  heavily skinned Oppo/Vivo builds (ColorOS / Funtouch): no CardView, no
+  Material widgets, nothing that needs a theme attribute the skin rewrote.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/panel_root"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/panel_background"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:paddingLeft="12dp"
+    android:paddingTop="10dp"
+    android:paddingRight="12dp"
+    android:paddingBottom="12dp">
+
+    <!-- Header: status dot + title + collapse button + close button -->
+    <LinearLayout
+        android:id="@+id/header_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/status_dot"
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:background="@drawable/dot_accent" />
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/app_name"
+            android:textColor="@color/text_primary"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btn_collapse"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="▾"
+            android:textColor="@color/muted"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/btn_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="✕"
+            android:textColor="@color/muted"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- One-line state readout, e.g. "RETAILERS · 41/125 · scanning list" -->
+    <TextView
+        android:id="@+id/state_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Idle · press ▶ START"
+        android:textColor="@color/accent"
+        android:textSize="10sp"
+        android:fontFamily="monospace" />
+
+    <!-- Body: counters + target info + buttons. Collapsed by tapping ▾ -->
+    <LinearLayout
+        android:id="@+id/body_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <!-- SUCCESS / SKIPPED / ERRORS counters -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout style="@style/PanelChip">
+
+                <TextView
+                    android:id="@+id/count_success"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/success_green"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/panel_success"
+                    android:textColor="@color/muted"
+                    android:textSize="8sp"
+                    android:letterSpacing="0.08" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/PanelChip"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp">
+
+                <TextView
+                    android:id="@+id/count_skipped"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/skip_amber"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/panel_skipped"
+                    android:textColor="@color/muted"
+                    android:textSize="8sp"
+                    android:letterSpacing="0.08" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/PanelChip"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp">
+
+                <TextView
+                    android:id="@+id/count_errors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/error_red"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/panel_errors"
+                    android:textColor="@color/muted"
+                    android:textSize="8sp"
+                    android:letterSpacing="0.08" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Retailers seen / total + currently active SMR -->
+        <TextView
+            android:id="@+id/retailer_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:fontFamily="monospace"
+            android:text="Retailers 0/125   ·   next: —"
+            android:textColor="@color/text_secondary"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/message_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Waiting for ▶ START"
+            android:textColor="@color/muted"
+            android:textSize="10sp" />
+
+        <!-- START / PAUSE / Reset -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_start"
+                style="@style/PanelButton"
+                android:background="@drawable/panel_button_start"
+                android:text="@string/panel_start"
+                android:textColor="@color/ink" />
+
+            <Button
+                android:id="@+id/btn_pause"
+                style="@style/PanelButton"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:background="@drawable/panel_button_pause"
+                android:text="@string/panel_pause"
+                android:textColor="@color/ink" />
+
+            <Button
+                android:id="@+id/btn_reset"
+                style="@style/PanelButton"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:background="@drawable/panel_button_neutral"
+                android:text="@string/panel_reset"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <!-- Optional operator PIN. Not security, just a guard against a stray tap
+             while the phone sits in a shop counter. Empty = no gate. -->
+        <TextView
+            android:id="@+id/btn_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:gravity="center"
+            android:text="@string/panel_password"
+            android:textColor="@color/muted"
+            android:textSize="9sp" />
+    </LinearLayout>
+
+</LinearLayout>
